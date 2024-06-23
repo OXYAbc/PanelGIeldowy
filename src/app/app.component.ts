@@ -10,6 +10,7 @@ import {GridOptions} from "ag-grid-community";
 import {formatData, formatDate} from "./helper";
 import {MatDialog} from "@angular/material/dialog";
 import {StockModalComponent} from "./components/stock-modal.component";
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'app-root',
@@ -110,6 +111,10 @@ export class AppComponent implements OnInit {
         });
     }
 
+    get isAnyRowSelected() {
+      return !!this.agGrid?.api.getSelectedRows().length
+    }
+
     updateChartOptions(dataArray: any[]) {
         const symbols = ['AAPL', 'MSFT', 'GOOGL'];
 
@@ -164,4 +169,15 @@ export class AppComponent implements OnInit {
             data: {}
         });
     }
+
+  exportSelectedRowsToExcel() {
+    const selectedNodes = this.agGrid.api.getSelectedNodes();
+    const selectedData = selectedNodes.map(node => node.data);
+
+    const worksheet = XLSX.utils.json_to_sheet(selectedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'SelectedRows');
+
+    XLSX.writeFile(workbook, 'selected_rows.xlsx');
+  }
 }
