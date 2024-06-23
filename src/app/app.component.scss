@@ -40,3 +40,13 @@
 .highcharts-data-table tr:hover {
   background: #f1f7ff;
 }
+
+.ag-theme-alpine {
+  height: 220px;
+  width: 100%;
+}
+
+.ag-theme-alpine .ag-center-cols-container {
+  overflow-y: auto;
+  overflow-x: auto;
+}
